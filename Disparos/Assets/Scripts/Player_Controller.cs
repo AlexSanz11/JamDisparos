@@ -7,7 +7,7 @@ public class Player_Controller : MonoBehaviour
 {
     [SerializeField] float MoveVel;
     [SerializeField] float RotVel;
-    [SerializeField] GameObject disparo;
+    [SerializeField] bool disparo;
     [SerializeField] GameObject balaPref;
 
     // Start is called before the first frame update
@@ -45,15 +45,13 @@ public class Player_Controller : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity))
         {
             Debug.Log("Disparaooo");
-
             // Optionally tag the object (if needed)
-           if( hit.collider.gameObject.tag == "Diana")
-            {
-                // Destroy the object that was hit
-                Destroy(hit.collider.gameObject);
-            }
-
-          
+                if (hit.collider.gameObject.tag == "Diana")
+                {
+                    // Destroy the object that was hit
+                    Destroy(hit.collider.gameObject);
+                    
+               }
         }
     }
 }
