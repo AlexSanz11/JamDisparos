@@ -60,9 +60,14 @@ public class Player_Controller : MonoBehaviour
                 // Destruye el objeto que fue golpeado
                 Destroy(hit.collider.gameObject);
             }
-
-            // Actualiza la puntuación (asumiendo que `puntacion` y `puntaciondiana` están definidos)
-            puntacion.text = puntaciondiana.ToString();
+            puntuacion();
+            
         }
+    }
+    public void puntuacion()
+    {
+        puntaciondiana++;
+        // Actualiza la puntuación (asumiendo que `puntacion` y `puntaciondiana` están definidos)
+        puntacion.text = puntaciondiana.ToString();
     }
 }
