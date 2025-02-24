@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -8,12 +9,15 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float MoveVel;
     [SerializeField] float RotVel;
     [SerializeField] bool disparo;
-    [SerializeField] GameObject balaPref;
-
+    [SerializeField] Transform gunPos;
+    //puntacion
+    public TextMeshProUGUI puntacion;
+    public int puntaciondiana;
     // Start is called before the first frame update
     void Start()
     {
-
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
@@ -37,21 +41,28 @@ public class Player_Controller : MonoBehaviour
     }
     public void Disparo()
     {
-        // Convert the mouse position to a ray in world space
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
+        // Obtén la posición y dirección del arma
+        Vector3 origenRayo = gunPos.position;
+        Vector3 direccionRayo = gunPos.forward;
 
-        // Perform the raycast with a maximum distance
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        // Dibuja el rayo para depuración
+        Debug.DrawRay(origenRayo, direccionRayo * 20, Color.white, 2.0f);
+
+        // Realiza el raycast con una distancia máxima
+        RaycastHit hit;
+        if (Physics.Raycast(origenRayo, direccionRayo, out hit, Mathf.Infinity))
         {
             Debug.Log("Disparaooo");
-            // Optionally tag the object (if needed)
-                if (hit.collider.gameObject.tag == "Diana")
-                {
-                    // Destroy the object that was hit
-                    Destroy(hit.collider.gameObject);
-                    
-               }
+
+            // Opcionalmente, verifica si el objeto golpeado tiene un tag específico
+            if (hit.collider.gameObject.tag == "Diana")
+            {
+                // Destruye el objeto que fue golpeado
+                Destroy(hit.collider.gameObject);
+            }
+
+            // Actualiza la puntuación (asumiendo que `puntacion` y `puntaciondiana` están definidos)
+            puntacion.text = puntaciondiana.ToString();
         }
     }
 }
