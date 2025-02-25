@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -13,11 +14,15 @@ public class Player_Controller : MonoBehaviour
     //puntacion
     public TextMeshProUGUI puntacion;
     public int puntaciondiana;
+    public int puntacioncambiarescena = 4;
+    public string nombreSiguienteEscena;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        puntacion.text = puntaciondiana.ToString();
+
     }
 
     // Update is called once per frame
@@ -34,7 +39,7 @@ public class Player_Controller : MonoBehaviour
         {
             this.transform.GetChild(0).Rotate(RotVel * Time.deltaTime * Input.GetAxis("Mouse Y"), RotVel * Time.deltaTime * Input.GetAxis("Mouse X"), 0);
         }
-        if (Input.GetAxis("Fire1") != 0)
+        if (Input.GetMouseButtonDown(0))
         {
             Disparo();
         }
@@ -59,8 +64,8 @@ public class Player_Controller : MonoBehaviour
             {
                 // Destruye el objeto que fue golpeado
                 Destroy(hit.collider.gameObject);
+                puntuacion();
             }
-            puntuacion();
             
         }
     }
@@ -69,5 +74,13 @@ public class Player_Controller : MonoBehaviour
         puntaciondiana++;
         // Actualiza la puntuación (asumiendo que `puntacion` y `puntaciondiana` están definidos)
         puntacion.text = puntaciondiana.ToString();
+        if(puntaciondiana>= puntacioncambiarescena)
+        {
+            Cambiarescena();
+        }
+    }
+    public void Cambiarescena()
+    {
+        SceneManager.LoadScene(nombreSiguienteEscena);
     }
 }
