@@ -16,6 +16,11 @@ public class Player_Controller : MonoBehaviour
     public int puntaciondiana;
     public int puntacioncambiarescena = 4;
     public string nombreSiguienteEscena;
+    //respawn del player
+    public Transform respawnPoint; // Punto de respawn (asignado en el Inspector)
+    public float respawnRange = -10f; // Rango para considerar que el jugador está en la posición de caída
+
+    public static bool muerteExterna=false; 
     // Start is called before the first frame update
     void Start()
     {
@@ -35,14 +40,33 @@ public class Player_Controller : MonoBehaviour
             this.transform.Translate(MoveVel * Time.deltaTime * Input.GetAxis("Horizontal"), 0, MoveVel * Time.deltaTime * Input.GetAxis("Vertical"));
 
         }
-        if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
-        {
-            this.transform.GetChild(0).Rotate(RotVel * Time.deltaTime * Input.GetAxis("Mouse Y"), RotVel * Time.deltaTime * Input.GetAxis("Mouse X"), 0);
-        }
+        
+         if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
+         {
+            // Rotación del jugador en el eje Y (izquierda y derecha)
+            float rotationY = RotVel * Time.deltaTime * Input.GetAxis("Mouse X");
+            this.transform.Rotate(0, rotationY, 0);
+
+            // Rotación de la cámara en el eje X (arriba y abajo)
+            float rotationX = RotVel * Time.deltaTime * -Input.GetAxis("Mouse Y");
+            this.transform.GetChild(0).Rotate(rotationX, 0, 0);
+         }
         if (Input.GetMouseButtonDown(0))
         {
             Disparo();
         }
+        if (muerteExterna)
+        {
+            muerteExterna = false;
+        }
+
+        if (transform.position.y <= respawnRange)
+        {
+            Debug.Log("Jugador respawneado.");
+            this.transform.position = respawnPoint.position;
+            this.transform.rotation = respawnPoint.rotation;
+        }
+
     }
     public void Disparo()
     {
@@ -65,8 +89,7 @@ public class Player_Controller : MonoBehaviour
                 // Destruye el objeto que fue golpeado
                 Destroy(hit.collider.gameObject);
                 puntuacion();
-            }
-            
+            } 
         }
     }
     public void puntuacion()
@@ -83,4 +106,6 @@ public class Player_Controller : MonoBehaviour
     {
         SceneManager.LoadScene(nombreSiguienteEscena);
     }
+  
+    
 }

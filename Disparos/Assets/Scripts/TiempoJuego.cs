@@ -11,6 +11,8 @@ public class TiempoJuego : MonoBehaviour
     private float tiempo;
     private bool empieza;
     public GameObject playerC;
+
+    public GameObject _OverpanelVictoria;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -21,7 +23,7 @@ public class TiempoJuego : MonoBehaviour
     {
         Time.timeScale = 1;
 
-
+        _OverpanelVictoria.SetActive(false);
     }
 
     // Update is called once per frame
@@ -33,6 +35,7 @@ public class TiempoJuego : MonoBehaviour
             if (tiempo < 1)
             {
                 empieza = false;
+                Player_Controller.muerteExterna = true;
             }
             int tempMin = Mathf.FloorToInt(tiempo / 60);
             int tempSeg = Mathf.FloorToInt(tiempo % 60);
@@ -43,6 +46,7 @@ public class TiempoJuego : MonoBehaviour
             if (tiempo == 0)
             {
                 Time.timeScale = 0;
+                _OverpanelVictoria.SetActive (true);
             }
 
         }
