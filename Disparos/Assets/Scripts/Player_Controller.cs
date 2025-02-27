@@ -107,7 +107,7 @@ public class Player_Controller : MonoBehaviour
         {
             Cambiarescena();
         }
-        if (puntaciondiana == 1)
+        if (puntaciondiana == 15)
         {
             VictoriaOverpanel.SetActive(true);
             Time.timeScale = 0f;
