@@ -11,6 +11,9 @@ public class Player_Controller : MonoBehaviour
     [SerializeField] float RotVel;
     [SerializeField] bool disparo;
     [SerializeField] Transform gunPos;
+    //Ganar
+    [SerializeField] GameObject VictoriaOverpanel;
+    
     //puntacion
     public TextMeshProUGUI puntacion;
     public int puntaciondiana;
@@ -27,7 +30,11 @@ public class Player_Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         puntacion.text = puntaciondiana.ToString();
-
+        if(VictoriaOverpanel != null) 
+        {
+            VictoriaOverpanel.SetActive(false);
+        }
+        Time.timeScale = 1.0f;
     }
 
     // Update is called once per frame
@@ -38,7 +45,6 @@ public class Player_Controller : MonoBehaviour
             //usando los dos palitos juntamos los dos codigos en uno para q detecte todo el rato las dos direcciones cuando utilizamos los controles
 
             this.transform.Translate(MoveVel * Time.deltaTime * Input.GetAxis("Horizontal"), 0, MoveVel * Time.deltaTime * Input.GetAxis("Vertical"));
-
         }
         
          if (Input.GetAxis("Mouse X") != 0 || Input.GetAxis("Mouse Y") != 0)
@@ -101,11 +107,15 @@ public class Player_Controller : MonoBehaviour
         {
             Cambiarescena();
         }
+        if (puntaciondiana == 1)
+        {
+            VictoriaOverpanel.SetActive(true);
+            Time.timeScale = 0f;
+        }
     }
     public void Cambiarescena()
     {
         SceneManager.LoadScene(nombreSiguienteEscena);
     }
-  
     
 }

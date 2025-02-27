@@ -12,7 +12,7 @@ public class TiempoJuego : MonoBehaviour
     private bool empieza;
     public GameObject playerC;
 
-    public GameObject _OverpanelVictoria;
+    public GameObject _OverpanelDerrota;
     // Start is called before the first frame update
     private void Awake()
     {
@@ -23,7 +23,7 @@ public class TiempoJuego : MonoBehaviour
     {
         Time.timeScale = 1;
 
-        _OverpanelVictoria.SetActive(false);
+        _OverpanelDerrota.SetActive(false);
     }
 
     // Update is called once per frame
@@ -32,10 +32,16 @@ public class TiempoJuego : MonoBehaviour
         if (empieza)//Duración de partida
         {
             tiempo -= Time.deltaTime;
-            if (tiempo < 1)
+            if (tiempo <= 0)
             {
+                tiempo = 0;
                 empieza = false;
                 Player_Controller.muerteExterna = true;
+
+                // Activa el panel de derrota y detén el tiempo
+                _OverpanelDerrota.SetActive(true);
+                Time.timeScale = 0;
+                Debug.Log("Tiempo agotado: Derrota");
             }
             int tempMin = Mathf.FloorToInt(tiempo / 60);
             int tempSeg = Mathf.FloorToInt(tiempo % 60);
@@ -46,7 +52,8 @@ public class TiempoJuego : MonoBehaviour
             if (tiempo == 0)
             {
                 Time.timeScale = 0;
-                _OverpanelVictoria.SetActive (true);
+                _OverpanelDerrota.SetActive (true);
+                Debug.Log("entra");
             }
 
         }
